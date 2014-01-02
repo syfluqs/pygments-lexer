@@ -128,6 +128,7 @@ class M4Lexer(RegexLexer):
             ],
         'statements': [
             ('(' + '|'.join(gnu_m4_macros) + r')(\()', bygroups(Name.Builtin, Punctuation), 'macro'),
+            ('([a-zA-Z_][a-zA-Z0-9_]*)(\()', bygroups(Name, Punctuation), 'macro'),
             (r'`', String, 'string'),
             ],
         'root': [
