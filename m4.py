@@ -124,11 +124,11 @@ class M4Lexer(RegexLexer):
             (r'#.*', Comment.Single),
             ],
         'text': [
-            ('.+', Text),
+            ('[^#\n]+', Text),
             ],
         'statements': [
             ('(' + '|'.join(gnu_m4_macros) + r')(\()', bygroups(Name.Builtin, Punctuation), 'macro'),
-            ('([a-zA-Z_][a-zA-Z0-9_]*)(\()', bygroups(Name, Punctuation), 'macro'),
+            (r'([a-zA-Z_][a-zA-Z0-9_]*)(\()', bygroups(Name, Punctuation), 'macro'),
             (r'`', String, 'string'),
             ],
         'root': [
@@ -138,10 +138,10 @@ class M4Lexer(RegexLexer):
             ],
         'macro': [
             include('statements'),
-            (r'[^\),]+', Text),
             (',', Punctuation),
             (r'(\))(dnl)(\n)', bygroups(Punctuation, Keyword, Text), '#pop'),
             (r'\)', Punctuation, '#pop'),
+            (r'[^\),`]+', Text),
         ],
         'string': [
             (r"[^`']", String),
