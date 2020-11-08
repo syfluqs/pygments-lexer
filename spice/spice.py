@@ -38,16 +38,18 @@ class SpiceLexer(RegexLexer):
     model_types = r'(R|C|L|SW|CSW|URC|LTRA|D|NPN|PNP|NJF|PJF|NMOS|PMOS|NMF|PMF)'
     devices = r'^(R|C|L|K|S|W|V|I|G|E|F|H|B|T|O|U|Y|P|D|Q|J|Z|M|X)'
 
-    element_name = r'[a-z0-9]+'
-    node_name = r'[a-z0-9]+'
+    element_name = r'[a-z0-9_]+'
+    node_name = r'[a-z0-9_]+'
 
     tokens = {
         'root': [
             (r'\n', Text),
             (r'\s+', Text),
             (r'^\*.*', Comment.Single),
-            (r'[(){}]', Punctuation),
-            (r'[=+\-\*\/]', Operator),
+            (r'[(){}\|\:\;\?]', Punctuation),
+            (r'\"(.*?)\"', String),
+            (r'\'(.*?)\'', String),
+            (r'[=+\-\*\/\#]', Operator),
             (r'^(\.title)(\s+)(.*)', bygroups(Keyword, Text.Whitespace, Text)),
             (r'^(\.include)(\s+)(.*)', bygroups(Keyword, Text.Whitespace, Text)),
             (r'^(\.subckt)(\s+)(' + element_name + ')',
